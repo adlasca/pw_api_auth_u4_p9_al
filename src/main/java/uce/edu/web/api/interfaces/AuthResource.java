@@ -17,7 +17,7 @@ public class AuthResource {
             @QueryParam("user") String user,
             @QueryParam("password") String password) {
         // Donde se compara el password y usuario contra la base
-        //HACER CRUD, tabla usuario: nombre,password y rol
+        //HACER CRUD, tabla usuario: id, usuario,password y rol(admin)
         boolean ok = true;
         String role ="admin";
         if (ok) {
