@@ -3,25 +3,37 @@ package uce.edu.web.api.interfaces;
 import java.time.Instant;
 import java.util.Set;
 
+import uce.edu.web.api.application.UserService;
+import uce.edu.web.api.domain.User;
+import jakarta.inject.Inject;
+
 import io.smallrye.jwt.build.Jwt;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.Produces;
 
+@Path("/auth")
+@ApplicationScoped
 public class AuthResource {
+
+    @Inject
+    UserService userService;
 
     @GET
     @Path("/token")
+    @Produces(MediaType.APPLICATION_JSON)
     public TokenResponse token(
-
-            @QueryParam("user") String user,
+            @QueryParam("user") String username,
             @QueryParam("password") String password) {
-        // Donde se compara el password y usuario contra la base
-        //HACER CRUD, tabla usuario: id, usuario,password y rol(admin)
-        boolean ok = true;
-        String role ="admin";
-        if (ok) {
 
+        User user = userService.validateUser(username, password);
+
+        if (user != null) {
+            System.out.println("User found");
+            String role = user.getRole();
             String issuer = "matricula-auth";
             long ttl = 3600;
 
@@ -29,15 +41,16 @@ public class AuthResource {
             Instant exp = now.plusSeconds(ttl);
 
             String jwt = Jwt.issuer(issuer)
-                    .subject(user)
-                    .groups(Set.of(role)) // roles: user / admin
+                    .subject(username)
+                    .groups(Set.of(role))
                     .issuedAt(now)
                     .expiresAt(exp)
                     .sign();
 
             return new TokenResponse(jwt, exp.getEpochSecond(), role);
-        }else{
-            return null;
+        } else {
+            System.out.println("User not found");
+            return null; // O lanzar una excepción de no autorizado/forbidden
         }
     }
 
