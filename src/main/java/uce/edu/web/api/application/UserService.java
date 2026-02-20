@@ -26,7 +26,7 @@ public class UserService {
     }
 
     @Transactional
-    public void actualizarUser(Long id, UserRepresentation userR) {
+    public void actualizarUser(Long id, User userR) {
         User user = userRepository.findById(id);
         user.setNombre(userR.getNombre());
         user.setPassword(userR.getPassword());
@@ -35,7 +35,7 @@ public class UserService {
     }
 
     @Transactional
-    public void actualizarParcial(Long id, UserRepresentation userR) {
+    public void actualizarParcial(Long id, User userR) {
         User user = userRepository.findById(id);
         if (userR.getNombre() != null) {
             user.setNombre(userR.getNombre());
@@ -63,7 +63,7 @@ public class UserService {
     }
 
     public UserRepresentation mapperToUR(User user) {
-        return new UserRepresentation(user.getId(), user.getNombre(), user.getPassword(), user.getRole());
+        return new UserRepresentation(user.getId(), user.getNombre(), user.getRole());
     }
 
     public User validateUser(String nombre, String password) {

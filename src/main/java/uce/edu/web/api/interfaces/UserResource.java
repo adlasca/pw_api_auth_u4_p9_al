@@ -5,6 +5,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -50,15 +51,25 @@ public class UserResource {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUser(@jakarta.ws.rs.PathParam("id") Long id,
-            uce.edu.web.api.application.representation.UserRepresentation user) {
+    public Response updateUser(@PathParam("id") Long id,
+            User user) {
         userService.actualizarUser(id, user);
+        return Response.ok().build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserPartial(@PathParam("id") Long id,
+            User user) {
+        userService.actualizarParcial(id, user);
         return Response.ok().build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteUser(@jakarta.ws.rs.PathParam("id") Long id) {
+    public Response deleteUser(@PathParam("id") Long id) {
         userService.borrarUser(id);
         return Response.noContent().build();
     }

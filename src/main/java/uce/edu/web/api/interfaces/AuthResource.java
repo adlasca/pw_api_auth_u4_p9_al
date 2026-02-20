@@ -34,7 +34,7 @@ public class AuthResource {
         if (user != null) {
             System.out.println("User found");
             String role = user.getRole();
-            String issuer = "matricula-auth";
+            String issuer = "pelicula-auth";
             long ttl = 3600;
 
             Instant now = Instant.now();
@@ -46,7 +46,7 @@ public class AuthResource {
                     .issuedAt(now)
                     .expiresAt(exp)
                     .sign();
-
+            System.out.println("User found: " + jwt);
             return new TokenResponse(jwt, exp.getEpochSecond(), role);
         } else {
             System.out.println("User not found");
