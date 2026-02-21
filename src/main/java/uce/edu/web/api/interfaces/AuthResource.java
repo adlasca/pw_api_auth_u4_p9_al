@@ -34,7 +34,7 @@ public class AuthResource {
         if (user != null) {
             System.out.println("User found");
             String role = user.getRole();
-            String issuer = "pelicula-auth";
+            String issuer = "consultorio-auth";
             long ttl = 3600;
 
             Instant now = Instant.now();
